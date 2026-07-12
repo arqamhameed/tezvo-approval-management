@@ -74,7 +74,7 @@ Support: tezvosupport@gmail.com
     ],
     'installable': True,
     'application': True,
-    'price': 399.0,
+    'price': 199.0,
     'currency': 'USD',
     'license': 'OPL-1',
     'post_init_hook': 'post_init_sync_integrations',
