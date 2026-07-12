@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Tezvo Approval Management',
+    'name': 'All-in-One Approval Hub',
     'version': '19.0.1.0.0',
-    'summary': 'Configurable multi-level approval workflow for Odoo business documents.',
+    'summary': 'Approve Sales, Purchase, Accounting, Inventory, and Manufacturing documents from one centralized approval hub.',
     'description': """
-Tezvo Approval Management
-=========================
-Provides a configurable multi-level approval workflow for Odoo transactional
-documents, including Sales Orders, Purchase Orders, Vendor Bills, Customer
-Invoices, Payments, Journal Entries, Stock Transfers, Manufacturing Orders,
-Unbuild Orders, and Scrap Orders.
+All-in-One Approval Hub
+=======================
+Provides a centralized approval workspace for Odoo transactional documents,
+including Sales Orders, Purchase Orders, Vendor Bills, Customer Invoices,
+Payments, Journal Entries, Stock Transfers, Manufacturing Orders, Unbuild
+Orders, and Scrap Orders.
 
 Features
 --------
+- Centralized multi-module approval workspace
 - Multi-level approval rules with configurable sequences
 - Approver rights with amount-based thresholds and expiry
 - Approval history and full chatter audit trail
@@ -20,7 +21,7 @@ Features
 - Unified Approval Setup configuration form
 - Document-level approval controls
 
-Developed to support streamlined ERP approval processes and operational governance.
+Developed to support centralized ERP approval processes and operational governance.
 
 Support: tezvosupport@gmail.com
     """,
