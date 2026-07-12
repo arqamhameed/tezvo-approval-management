@@ -68,9 +68,9 @@ Support: tezvosupport@gmail.com
         ],
     },
     'images': [
+        'images/main_screenshot.png',
         'images/main_1.png',
         'images/main_2.png',
-        'images/main_screenshot.png',
     ],
     'installable': True,
     'application': True,
