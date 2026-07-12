@@ -1,210 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>All-in-One Approval Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #243447; margin: 0; padding: 0; background: #f8fafc; }
-    .oe_container { max-width: 900px; margin: 0 auto; padding: 0 16px 24px; }
-    .oe_row { margin-bottom: 16px; }
-    .oe_span12 { width: 100%; }
-    h1, h2, h3 { color: #1f6feb; margin: 0 0 8px; }
-    p, li { font-size: 14px; color: #455569; }
-    ul { padding-left: 20px; }
-    .img { display: block; width: 100%; height: auto; margin: 0 0 12px; border: 1px solid #e5e9f2; }
-    .box { background: #fff; border: 1px solid #e5e9f2; padding: 12px 14px; margin-bottom: 10px; }
-    .footer { border-top: 1px solid #e5e9f2; padding-top: 12px; font-size: 13px; color: #5b6b7f; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f7f9fc;
+      color: #243447;
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+    }
+    .hero {
+      background: linear-gradient(135deg, #f7f9fc 0%, #eef4ff 100%);
+      padding: 40px 0 24px;
+      border-bottom: 1px solid #e3e8ef;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1f6feb;
+      margin-bottom: 10px;
+    }
+    .hero .subtitle {
+      font-size: 1.05rem;
+      color: #51667a;
+      margin-bottom: 16px;
+    }
+    .badge-pill {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #e7f0ff;
+      color: #1b4f9e;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .card-box {
+      background: #ffffff;
+      border: 1px solid #e5eaf2;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(36, 52, 71, 0.05);
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1px solid #e5eaf2;
+      border-radius: 12px;
+      padding: 18px;
+      height: 100%;
+      box-shadow: 0 3px 10px rgba(36, 52, 71, 0.04);
+    }
+    .feature-card h3 {
+      font-size: 1rem;
+      color: #1f6feb;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .feature-card p {
+      margin-bottom: 0;
+      color: #51667a;
+      font-size: 0.94rem;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1f6feb;
+      margin-bottom: 14px;
+    }
+    .doc-support {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .doc-support .pill {
+      background: #f2f6ff;
+      color: #24508f;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      border: 1px solid #dce8ff;
+    }
+    .img-fluid {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 10px 0 24px;
+    }
+    .footer {
+      border-top: 1px solid #e5eaf2;
+      padding-top: 16px;
+      margin-top: 24px;
+      color: #5b6b7f;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-        <img src="banner.png" alt="All-in-One Approval Hub for Odoo 19" style="max-width:100%; height:auto; display:block; margin:20px auto;">
-    </div>
-  </section>
-
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h1>All-in-One Approval Hub for Odoo 19</h1>
-        <h3>Centralized Multi-Level Approval Workflow for Sales, Purchase, Accounting, Inventory, and Manufacturing</h3>
-        <p>All-in-One Approval Hub for Odoo 19 centralizes approval requests from Sales, Purchase, Accounting, Inventory, and Manufacturing into one approval workspace. Approvers do not need to open each individual Odoo app to find pending documents. They can review, approve, reject, and track approval requests from one place.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Why This App Is Useful</h2>
-        <div class="box">
-          <ul>
-            <li>In standard business operations, approvals are often spread across different modules.</li>
-            <li>Users may need to open Sales, Purchase, Accounting, Inventory, or Manufacturing separately to find pending approvals.</li>
-            <li>This app provides one centralized approval hub for cross-module approval management.</li>
-            <li>It reduces module switching and improves approver visibility.</li>
-            <li>It helps managers control pending approvals, approval history, and delegated approvals from one place.</li>
-          </ul>
+  <section class="hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1>All-in-One Approval Hub</h1>
+          <p class="subtitle">Centralized Multi-Level Approval Workflow for Odoo 19</p>
+          <div class="mb-4">
+            <span class="badge-pill">Odoo 19 Compatible</span>
+            <span class="badge-pill">Multi-Level Approval</span>
+            <span class="badge-pill">Centralized Approval Workspace</span>
+          </div>
+          <img src="banner.png" style="width: 80%; border-radius: 12px;" />
         </div>
       </div>
     </div>
   </section>
 
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Key Features</h2>
-        <div class="box">
-          <ul>
-            <li>Centralized approval workspace</li>
-            <li>Multi-level approval workflow</li>
-            <li>Cross-module approval management</li>
-            <li>Amount-based approval thresholds</li>
-            <li>Sequence-based approval levels</li>
-            <li>Minimum approver requirements by level</li>
-            <li>Company-wise approval configuration</li>
-            <li>Approval delegation</li>
-            <li>Approval audit trail</li>
-            <li>Email notifications</li>
-            <li>Chatter logging</li>
-            <li>User rights and security groups</li>
-            <li>Read-only protection for approval setup and back-rule records</li>
-          </ul>
+  <section class="container py-4">
+    <div class="card-box">
+      <h2 class="section-title">All-in-One Approval Hub for Odoo 19</h2>
+      <p>All-in-One Approval Hub centralizes approval requests from multiple Odoo modules into one approval workspace. Managers and approvers can review, approve, reject, and track approval requests without switching between Sales, Purchase, Accounting, Inventory, and Manufacturing apps.</p>
+      <div class="doc-support">
+        <span class="pill"><i class="fa-solid fa-book-open"></i> Documentation: Easy configuration and setup guide included.</span>
+        <span class="pill"><i class="fa-solid fa-headset"></i> Support: Support available via tezvosupport@gmail.com.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container py-2">
+    <h2 class="section-title">Key Highlights</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <h3>Centralized Approval Workspace</h3>
+          <p>Approve documents from Sales, Purchase, Accounting, Inventory, and Manufacturing in one place.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <h3>Multi-Level Approval Workflow</h3>
+          <p>Configure sequence-based approval levels, approvers, and minimum approval requirements.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <h3>Amount-Based Approval Control</h3>
+          <p>Define approval rules based on transaction value and business conditions.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <h3>Approval Delegation</h3>
+          <p>Delegate approval authority during leave, absence, or temporary unavailability.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <h3>Complete Approval Audit Trail</h3>
+          <p>Track submit, approve, reject, cancel, and level transition actions with user and date details.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card">
+          <h3>User Rights and Security</h3>
+          <p>Control approval access using dedicated approval roles and security groups.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Supported Odoo Documents</h2>
-        <div class="box">
-          <ul>
-            <li>Sales Orders</li>
-            <li>Purchase Orders</li>
-            <li>Customer Invoices</li>
-            <li>Vendor Bills</li>
-            <li>Customer Payments</li>
-            <li>Vendor Payments</li>
-            <li>Inventory Transfers</li>
-            <li>Manufacturing Orders</li>
-            <li>Unbuild Orders</li>
-            <li>Scrap Orders</li>
-          </ul>
-        </div>
+  <section class="container py-4">
+    <div class="card-box">
+      <h2 class="section-title">Supported Documents</h2>
+      <div class="row g-2">
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Sales Orders</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Purchase Orders</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Customer Invoices</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Vendor Bills</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Customer Payments</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Vendor Payments</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Inventory Transfers</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Manufacturing Orders</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Unbuild Orders</span></div>
+        <div class="col-sm-6 col-md-4"><span class="badge-pill">Scrap Orders</span></div>
       </div>
     </div>
   </section>
 
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Search-Friendly Use Cases</h2>
-        <div class="box">
-          <ul>
-            <li>Sales Order approval workflow</li>
-            <li>Purchase Order approval workflow</li>
-            <li>Invoice approval workflow</li>
-            <li>Vendor Bill approval workflow</li>
-            <li>Payment approval workflow</li>
-            <li>Inventory Transfer approval workflow</li>
-            <li>Manufacturing Order approval workflow</li>
-            <li>Multi-level approval workflow</li>
-            <li>Approval delegation workflow</li>
-            <li>Centralized approval dashboard</li>
-          </ul>
-        </div>
-      </div>
+  <section class="container py-2">
+    <div class="card-box">
+      <h2 class="section-title">Use Cases</h2>
+      <ul>
+        <li>Sales Order approval workflow</li>
+        <li>Purchase Order approval workflow</li>
+        <li>Invoice approval workflow</li>
+        <li>Vendor Bill approval workflow</li>
+        <li>Payment approval workflow</li>
+        <li>Inventory Transfer approval workflow</li>
+        <li>Manufacturing Order approval workflow</li>
+        <li>Multi-level approval workflow</li>
+        <li>Approval delegation workflow</li>
+        <li>Centralized approval dashboard</li>
+      </ul>
     </div>
   </section>
 
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Approval Delegation</h2>
-        <div class="box">
-          <p>Approvers can delegate approval authority to another user for a defined period. This is useful when approvers are on leave or temporarily unavailable.</p>
-          <ul>
-            <li>Supports date-range validity.</li>
-            <li>Prevents overlapping delegations.</li>
-            <li>Prevents circular delegation.</li>
-            <li>Delegated approvals maintain approval history and audit trail.</li>
-          </ul>
-        </div>
-      </div>
+  <section class="container py-4">
+    <h2 class="section-title">Screenshots</h2>
+    <div class="card-box">
+      <h3>Approval Management Overview</h3>
+      <img src="screenshot_1.png" class="img-fluid shadow-sm" style="border-radius: 10px;" />
+    </div>
+    <div class="card-box">
+      <h3>Approval Setup Configuration</h3>
+      <img src="screenshot_2.png" class="img-fluid shadow-sm" style="border-radius: 10px;" />
+    </div>
+    <div class="card-box">
+      <h3>Approval Rules and Levels</h3>
+      <img src="screenshot_3.png" class="img-fluid shadow-sm" style="border-radius: 10px;" />
+    </div>
+    <div class="card-box">
+      <h3>Approval Request and History</h3>
+      <img src="screenshot_4.png" class="img-fluid shadow-sm" style="border-radius: 10px;" />
+    </div>
+    <div class="card-box">
+      <h3>Approval Delegation</h3>
+      <img src="screenshot_5.png" class="img-fluid shadow-sm" style="border-radius: 10px;" />
+    </div>
+    <div class="card-box">
+      <h3>User Approval Rights</h3>
+      <img src="screenshot_6.png" class="img-fluid shadow-sm" style="border-radius: 10px;" />
     </div>
   </section>
 
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Approval Audit Trail</h2>
-        <div class="box">
-          <p>Submit, approve, reject, cancel, and level transition actions are tracked.</p>
-          <ul>
-            <li>Approval history includes user, date, time, level, and action details.</li>
-            <li>Chatter logs help users review approval activity from the related document.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <h2>Security and User Rights</h2>
-        <div class="box">
-          <p>Dedicated approval groups are available for controlled access and configuration.</p>
-          <ul>
-            <li>Approval User</li>
-            <li>Approval Manager</li>
-            <li>Approval Admin</li>
-            <li>Approval Delegation Officer</li>
-            <li>Approval Back Rules Editor</li>
-          </ul>
-          <p>Approval rights can be managed from the user form. Critical approval configuration records are protected, and only authorized users can amend approval setup and back-rule records.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-        <h2>Screenshots</h2>
-
-        <h3>Approval Management Overview</h3>
-        <img src="screenshot_1.png" alt="Approval Management Overview" style="max-width:100%; height:auto; display:block; margin:15px auto 35px auto;">
-
-        <h3>Approval Setup Configuration</h3>
-        <img src="screenshot_2.png" alt="Approval Setup Configuration" style="max-width:100%; height:auto; display:block; margin:15px auto 35px auto;">
-
-        <h3>Approval Rules and Levels</h3>
-        <img src="screenshot_3.png" alt="Approval Rules and Levels" style="max-width:100%; height:auto; display:block; margin:15px auto 35px auto;">
-
-        <h3>Approval Request and History</h3>
-        <img src="screenshot_4.png" alt="Approval Request and History" style="max-width:100%; height:auto; display:block; margin:15px auto 35px auto;">
-
-        <h3>Approval Delegation</h3>
-        <img src="screenshot_5.png" alt="Approval Delegation" style="max-width:100%; height:auto; display:block; margin:15px auto 35px auto;">
-
-        <h3>User Approval Rights</h3>
-        <img src="screenshot_6.png" alt="User Approval Rights" style="max-width:100%; height:auto; display:block; margin:15px auto 35px auto;">
-    </div>
-  </section>
-
-  <section class="oe_container">
-    <div class="oe_row oe_spaced">
-      <div class="oe_span12">
-        <div class="footer">
-          <p>Developed by Tezvo</p>
-          <p>Support: tezvosupport@gmail.com</p>
-          <p>Odoo 19 Compatible</p>
-          <p>License: OPL-1</p>
-        </div>
-      </div>
+  <section class="container py-3">
+    <div class="footer">
+      <p><strong>Developed by Tezvo Solutions</strong></p>
+      <p>Support: tezvosupport@gmail.com</p>
+      <p>Odoo 19 Compatible</p>
+      <p>License: OPL-1</p>
     </div>
   </section>
 </body>
