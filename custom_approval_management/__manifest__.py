@@ -67,7 +67,11 @@ Support: tezvosupport@gmail.com
             'custom_approval_management/static/src/js/my_pending_refresh_stack_fix.js',
         ],
     },
-    'images': ['images/main_screenshot.png'],
+    'images': [
+        'images/main_1.png',
+        'images/main_2.png',
+        'images/main_screenshot.png',
+    ],
     'installable': True,
     'application': True,
     'price': 399.0,
