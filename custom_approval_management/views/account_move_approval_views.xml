@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_approval" model="ir.ui.view">
+        <field name="name">account.move.form.approval</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Submit for Approval near header state -->
+            <xpath expr="//header/field[@name='state']" position="before">
+                <button
+                    name="action_submit_for_approval"
+                    string="Submit for Approval"
+                    type="object"
+                    class="btn btn-primary"
+                    invisible="move_type not in ['in_invoice', 'in_refund', 'out_invoice', 'out_refund', 'entry'] or state != 'draft' or not approval_required or approval_state in ['waiting', 'partial', 'approved'] or approval_request_id"/>
+            </xpath>
+
+            <!-- Post button for journal entries: block until approved when approval is required -->
+            <xpath expr="//header/button[@name='action_post' and @type='object'][1]" position="attributes">
+                <attribute name="invisible">hide_post_button or move_type != 'entry' or (move_type == 'entry' and approval_required and approval_state != 'approved')</attribute>
+            </xpath>
+
+            <!-- Post/Confirm button for invoices: block until approved when approval is required -->
+            <xpath expr="//header/button[@name='action_post' and @type='object'][2]" position="attributes">
+                <attribute name="invisible">hide_post_button or move_type == 'entry' or display_inactive_currency_warning or (move_type in ['in_invoice', 'in_refund', 'out_invoice', 'out_refund'] and approval_required and approval_state != 'approved')</attribute>
+            </xpath>
+
+            <!-- Hidden technical fields used by view modifiers -->
+            <xpath expr="//sheet/div[@name='button_box']" position="before">
+                <field name="approval_required" invisible="1"/>
+                <field name="approval_state" invisible="1"/>
+                <field name="approval_request_id" invisible="1"/>
+                <field name="current_approval_level_id" invisible="1"/>
+            </xpath>
+
+            <!-- Smart button to open linked request -->
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button
+                    type="object"
+                    name="action_view_approval_request"
+                    class="oe_stat_button"
+                    icon="fa-check-square-o"
+                    invisible="move_type not in ['in_invoice', 'in_refund', 'out_invoice', 'out_refund', 'entry'] or not approval_request_id">
+                    <field name="approval_history_count" widget="statinfo" string="Approval"/>
+                </button>
+            </xpath>
+
+            <!-- Approval status banners near title -->
+            <xpath expr="//sheet/div[contains(@class, 'oe_title')]" position="after">
+                <div class="alert alert-warning" invisible="move_type != 'in_invoice' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This document is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="move_type != 'in_invoice' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This document is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'in_invoice' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This document has been fully approved and is ready to proceed.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'in_invoice' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This document has been approved and processed.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="move_type != 'in_invoice' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This document approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="move_type != 'in_invoice' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This document approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-warning" invisible="move_type != 'in_refund' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Vendor Credit Note is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="move_type != 'in_refund' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Vendor Credit Note is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'in_refund' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This Vendor Credit Note has been fully approved and is ready to post.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'in_refund' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This Vendor Credit Note has been approved and posted.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="move_type != 'in_refund' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Vendor Credit Note approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="move_type != 'in_refund' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Vendor Credit Note approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-warning" invisible="move_type != 'out_invoice' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Customer Invoice is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="move_type != 'out_invoice' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Customer Invoice is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'out_invoice' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This Customer Invoice has been fully approved and is ready to post.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'out_invoice' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This Customer Invoice has been approved and posted.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="move_type != 'out_invoice' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Customer Invoice approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="move_type != 'out_invoice' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Customer Invoice approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-warning" invisible="move_type != 'out_refund' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Customer Credit Note is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="move_type != 'out_refund' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Customer Credit Note is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'out_refund' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This Customer Credit Note has been fully approved and is ready to post.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'out_refund' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This Customer Credit Note has been approved and posted.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="move_type != 'out_refund' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Customer Credit Note approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="move_type != 'out_refund' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Customer Credit Note approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-warning" invisible="move_type != 'entry' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Journal Entry is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="move_type != 'entry' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Journal Entry is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'entry' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This Journal Entry has been fully approved and is ready to post.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="move_type != 'entry' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This Journal Entry has been approved and posted.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="move_type != 'entry' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Journal Entry approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="move_type != 'entry' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Journal Entry approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="mt-2" invisible="not approval_request_id">
+                    <button
+                        name="action_view_approval_request"
+                        type="object"
+                        string="View Approval Request"
+                        class="btn btn-secondary btn-sm"/>
+                </div>
+            </xpath>
+
+            <!-- Approval Status page -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Approval Status" name="approval_status" invisible="move_type not in ['in_invoice', 'in_refund', 'out_invoice', 'out_refund', 'entry']">
+                    <group string="Approval Status" invisible="not approval_required">
+                        <group>
+                            <field name="approval_required" readonly="1"/>
+                            <field name="approval_state" readonly="1" widget="badge"
+                                decoration-success="approval_state == 'approved'"
+                                decoration-danger="approval_state == 'rejected'"
+                                decoration-warning="approval_state in ['waiting', 'partial']"
+                                decoration-muted="approval_state == 'cancelled'"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                            <field name="current_approval_level_id" readonly="1"/>
+                            <field name="approval_history_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <p invisible="approval_required">
+                        No approval configuration found for this document.
+                        Configure an Approval Document Type for account.move in Approval Management.
+                    </p>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

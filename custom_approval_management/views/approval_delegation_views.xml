@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_approval_delegation_tree" model="ir.ui.view">
+        <field name="name">approval.delegation.tree</field>
+        <field name="model">approval.delegation</field>
+        <field name="arch" type="xml">
+            <list string="Approval Delegations" decoration-muted="not active" decoration-danger="state in ['cancelled', 'rejected']" decoration-warning="state == 'expired'" decoration-success="state == 'active'">
+                <field name="name"/>
+                <field name="original_user_id"/>
+                <field name="delegated_user_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="document_type_id"/>
+                <field name="approval_level_id"/>
+                <field name="company_id"/>
+                <field name="state"/>
+                <field name="is_delegation_active" string="Active" readonly="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_approval_delegation_form" model="ir.ui.view">
+        <field name="name">approval.delegation.form</field>
+        <field name="model">approval.delegation</field>
+        <field name="arch" type="xml">
+            <form string="Approval Delegation" create="1" edit="1" delete="0" duplicate="0">
+                <header>
+                    <field name="can_submit" invisible="1"/>
+                    <field name="can_set_draft" invisible="1"/>
+                    <field name="can_cancel" invisible="1"/>
+                    <field name="can_amend_after_approval" invisible="1"/>
+
+                    <button name="action_submit_for_approval" string="Submit for Approval" type="object" class="oe_highlight" invisible="not can_submit"/>
+                    <button name="action_view_approval_request" string="View Approval Request" type="object" invisible="not can_view_request"/>
+                    <button name="action_print" string="Print" type="object"/>
+                    <button name="action_set_draft" string="Set to Draft" type="object" invisible="not can_set_draft"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-secondary" invisible="not can_cancel"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_original_approval,approved_pending_start,active,expired,rejected,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group string="Delegation Details">
+                        <group>
+                            <field name="original_user_id" readonly="state != 'draft' and not can_amend_after_approval"/>
+                            <field name="delegated_user_id" readonly="state != 'draft' and not can_amend_after_approval"/>
+                            <field name="date_from" readonly="state != 'draft' and not can_amend_after_approval"/>
+                            <field name="date_to" readonly="state != 'draft' and not can_amend_after_approval"/>
+                            <field name="company_id" readonly="state != 'draft' and not can_amend_after_approval"/>
+                        </group>
+                        <group>
+                            <field name="is_delegation_active" readonly="1"/>
+                            <field name="active" invisible="1"/>
+                            <field name="reason" readonly="state != 'draft' and not can_amend_after_approval"/>
+                            <field name="create_uid" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Applicability">
+                        <group>
+                            <field name="document_type_id" readonly="state != 'draft' and not can_amend_after_approval"/>
+                            <field name="approval_level_id" readonly="state != 'draft' and not can_amend_after_approval"/>
+                        </group>
+                    </group>
+                    <group string="Approval / Acceptance Details">
+                        <group>
+                            <field name="submitted_by_id" readonly="1"/>
+                            <field name="submitted_on" readonly="1"/>
+                            <field name="original_approved_by_id" readonly="1"/>
+                            <field name="original_approved_on" readonly="1"/>
+                            <field name="original_rejected_by_id" readonly="1"/>
+                            <field name="original_rejected_on" readonly="1"/>
+                            <field name="original_rejection_reason" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="delegated_accepted_by_id" readonly="1"/>
+                            <field name="delegated_accepted_on" readonly="1"/>
+                            <field name="delegated_rejected_by_id" readonly="1"/>
+                            <field name="delegated_rejected_on" readonly="1"/>
+                            <field name="delegated_rejection_reason" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Audit">
+                        <group>
+                            <field name="cancelled_by_id" readonly="1"/>
+                            <field name="cancelled_on" readonly="1"/>
+                            <field name="cancellation_reason" readonly="1"/>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="expired_on" readonly="1"/>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_approval_delegation_search" model="ir.ui.view">
+        <field name="name">approval.delegation.search</field>
+        <field name="model">approval.delegation</field>
+        <field name="arch" type="xml">
+            <search string="Approval Delegations">
+                <field name="original_user_id"/>
+                <field name="delegated_user_id"/>
+                <field name="document_type_id"/>
+                <field name="approval_level_id"/>
+                <field name="company_id"/>
+                <separator/>
+                <filter name="active_delegations" string="Active Delegations" domain="[('state', '=', 'active')]"/>
+                <filter name="pending_start_delegations" string="Pending Start" domain="[('state', '=', 'approved_pending_start')]"/>
+                <filter name="waiting_original_delegations" string="Waiting Original Approval" domain="[('state', '=', 'waiting_original_approval')]"/>
+                <filter name="expired_delegations" string="Expired" domain="[('state', '=', 'expired')]"/>
+                <filter name="rejected_delegations" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter name="cancelled_delegations" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter name="my_as_original" string="My Delegations as Original Approver" domain="[('original_user_id', '=', uid)]"/>
+                <filter name="delegated_to_me" string="Delegated to Me" domain="[('delegated_user_id', '=', uid)]"/>
+                <filter name="active_today" string="Active Today" domain="[('date_from', '&lt;=', context_today().strftime('%Y-%m-%d')), ('date_to', '&gt;=', context_today().strftime('%Y-%m-%d')), ('state', '=', 'active')]"/>
+                <separator/>
+                <filter name="group_by_original" string="Original Approver" context="{'group_by': 'original_user_id'}"/>
+                <filter name="group_by_delegated" string="Delegated Approver" context="{'group_by': 'delegated_user_id'}"/>
+                <filter name="group_by_state" string="State" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_approval_delegation" model="ir.actions.act_window">
+        <field name="name">Approval Delegations</field>
+        <field name="res_model">approval.delegation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_approval_delegation_search"/>
+    </record>
+</odoo>

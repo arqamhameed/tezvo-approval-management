@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_form_approval" model="ir.ui.view">
+        <field name="name">account.payment.form.approval</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Submit for Approval -->
+            <xpath expr="//header/field[@name='state']" position="before">
+                <button
+                    name="action_submit_for_approval"
+                    string="Submit for Approval"
+                    type="object"
+                    class="btn btn-primary"
+                    invisible="state != 'draft' or not approval_required or approval_state in ['waiting', 'partial', 'approved'] or approval_request_id or ((payment_type != 'outbound' or partner_type != 'supplier') and (payment_type != 'inbound' or partner_type != 'customer'))"/>
+            </xpath>
+
+            <!-- Standard payment confirm/post button: hide until fully approved when required -->
+            <xpath expr="//header/button[@name='action_post' and @type='object']" position="attributes">
+                <attribute name="invisible">state != 'draft' or (approval_required and approval_state != 'approved')</attribute>
+            </xpath>
+
+            <!-- Validate button: keep blocked until fully approved when approval is required -->
+            <xpath expr="//header/button[@name='action_validate' and @type='object']" position="attributes">
+                <attribute name="invisible">state != 'in_process' or (approval_required and approval_state != 'approved')</attribute>
+            </xpath>
+
+            <!-- Hidden technical fields used by modifiers -->
+            <xpath expr="//sheet/div[@name='button_box']" position="before">
+                <field name="approval_required" invisible="1"/>
+                <field name="approval_state" invisible="1"/>
+                <field name="approval_request_id" invisible="1"/>
+                <field name="current_approval_level_id" invisible="1"/>
+            </xpath>
+
+            <!-- Smart button to open linked request -->
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button
+                    type="object"
+                    name="action_view_approval_request"
+                    class="oe_stat_button"
+                    icon="fa-check-square-o"
+                    invisible="not approval_request_id">
+                    <field name="approval_history_count" widget="statinfo" string="Approval"/>
+                </button>
+            </xpath>
+
+            <!-- Approval status banners -->
+            <xpath expr="//sheet/div[contains(@class, 'oe_title')]" position="after">
+                <div class="alert alert-warning" invisible="payment_type != 'outbound' or partner_type != 'supplier' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Vendor Payment is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="payment_type != 'outbound' or partner_type != 'supplier' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Vendor Payment is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="payment_type != 'outbound' or partner_type != 'supplier' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This Vendor Payment has been fully approved and is ready to post.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="payment_type != 'outbound' or partner_type != 'supplier' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This Vendor Payment has been approved and posted.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="payment_type != 'outbound' or partner_type != 'supplier' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Vendor Payment approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="payment_type != 'outbound' or partner_type != 'supplier' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Vendor Payment approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-warning" invisible="payment_type != 'inbound' or partner_type != 'customer' or not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Customer Payment is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="payment_type != 'inbound' or partner_type != 'customer' or not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Customer Payment is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="payment_type != 'inbound' or partner_type != 'customer' or not approval_required or approval_state != 'approved' or state != 'draft'">
+                    <h4>Approved</h4>
+                    <p>This Customer Payment has been fully approved and is ready to post.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="payment_type != 'inbound' or partner_type != 'customer' or not approval_required or approval_state != 'approved' or state != 'posted'">
+                    <h4>Approval Completed</h4>
+                    <p>This Customer Payment has been approved and posted.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="payment_type != 'inbound' or partner_type != 'customer' or not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Customer Payment approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="payment_type != 'inbound' or partner_type != 'customer' or not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Customer Payment approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="mt-2" invisible="not approval_request_id">
+                    <button
+                        name="action_view_approval_request"
+                        type="object"
+                        string="View Approval Request"
+                        class="btn btn-secondary btn-sm"/>
+                </div>
+            </xpath>
+
+            <!-- Approval Status page -->
+            <xpath expr="//sheet/group[@name='main_group']" position="after">
+                <notebook>
+                    <page string="Approval Status" name="approval_status">
+                        <group string="Approval Status" invisible="((payment_type != 'outbound' or partner_type != 'supplier') and (payment_type != 'inbound' or partner_type != 'customer')) or not approval_required">
+                            <group>
+                                <field name="approval_required" readonly="1"/>
+                                <field name="approval_state" readonly="1" widget="badge"
+                                    decoration-success="approval_state == 'approved'"
+                                    decoration-danger="approval_state == 'rejected'"
+                                    decoration-warning="approval_state in ['waiting', 'partial']"
+                                    decoration-muted="approval_state == 'cancelled'"/>
+                            </group>
+                            <group>
+                                <field name="approval_request_id" readonly="1"/>
+                                <field name="current_approval_level_id" readonly="1"/>
+                                <field name="approval_history_count" readonly="1"/>
+                            </group>
+                        </group>
+                        <p invisible="((payment_type != 'outbound' or partner_type != 'supplier') and (payment_type != 'inbound' or partner_type != 'customer')) or approval_required">
+                            No approval configuration found for this Payment.
+                            Configure an Approval Document Type for account.payment in Approval Management.
+                        </p>
+                    </page>
+                </notebook>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

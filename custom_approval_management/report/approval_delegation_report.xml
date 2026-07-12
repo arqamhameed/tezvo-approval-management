@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_approval_delegation" model="ir.actions.report">
+        <field name="name">Approval Delegation</field>
+        <field name="model">approval.delegation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_approval_management.report_approval_delegation_document</field>
+        <field name="report_file">custom_approval_management.report_approval_delegation_document</field>
+        <field name="print_report_name">(object.name or 'Approval Delegation')</field>
+        <field name="binding_model_id" ref="model_approval_delegation"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

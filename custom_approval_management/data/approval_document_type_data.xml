@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sales Document Types -->
+        <record id="approval_document_type_sales_order" model="approval.document.type">
+            <field name="name">Sales Order</field>
+            <field name="document_nature">sales_order</field>
+            <field name="module_code">sales_order</field>
+            <field name="approval_module_code">sale</field>
+            <field name="connector_module_name">custom_approval_sale</field>
+            <field name="target_module_name">sale</field>
+            <field name="amount_field_name">amount_total</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">date_order</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Purchase Document Types -->
+        <record id="approval_document_type_purchase_order" model="approval.document.type">
+            <field name="name">Purchase Order</field>
+            <field name="document_nature">purchase_order</field>
+            <field name="module_code">purchase_order</field>
+            <field name="approval_module_code">purchase</field>
+            <field name="connector_module_name">custom_approval_purchase</field>
+            <field name="target_module_name">purchase</field>
+            <field name="amount_field_name">amount_total</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">date_order</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Accounting Document Types -->
+        <record id="approval_document_type_vendor_bill" model="approval.document.type">
+            <field name="name">Vendor Bill</field>
+            <field name="document_nature">vendor_bill</field>
+            <field name="module_code">vendor_bill</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('move_type', '=', 'in_invoice')]</field>
+            <field name="amount_field_name">amount_total</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">invoice_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_vendor_credit_note" model="approval.document.type">
+            <field name="name">Vendor Credit Note</field>
+            <field name="document_nature">vendor_credit_note</field>
+            <field name="module_code">vendor_credit_note</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('move_type', '=', 'in_refund')]</field>
+            <field name="amount_field_name">amount_total</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">invoice_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_customer_invoice" model="approval.document.type">
+            <field name="name">Customer Invoice</field>
+            <field name="document_nature">customer_invoice</field>
+            <field name="module_code">customer_invoice</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('move_type', '=', 'out_invoice')]</field>
+            <field name="amount_field_name">amount_total</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">invoice_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_customer_credit_note" model="approval.document.type">
+            <field name="name">Customer Credit Note</field>
+            <field name="document_nature">customer_credit_note</field>
+            <field name="module_code">customer_credit_note</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('move_type', '=', 'out_refund')]</field>
+            <field name="amount_field_name">amount_total</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">invoice_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_vendor_payment" model="approval.document.type">
+            <field name="name">Vendor Payment</field>
+            <field name="document_nature">vendor_payment</field>
+            <field name="module_code">vendor_payment</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('payment_type', '=', 'outbound'), ('partner_type', '=', 'supplier')]</field>
+            <field name="amount_field_name">amount</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_customer_payment" model="approval.document.type">
+            <field name="name">Customer Payment</field>
+            <field name="document_nature">customer_payment</field>
+            <field name="module_code">customer_payment</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('payment_type', '=', 'inbound'), ('partner_type', '=', 'customer')]</field>
+            <field name="amount_field_name">amount</field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_account_journal_entry" model="approval.document.type">
+            <field name="name">Journal Entry</field>
+            <field name="document_nature">account_journal_entry</field>
+            <field name="module_code">account_journal_entry</field>
+            <field name="approval_module_code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_name">account</field>
+            <field name="document_filter_domain">[('move_type', '=', 'entry')]</field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Inventory Document Types -->
+        <record id="approval_document_type_stock_receipt" model="approval.document.type">
+            <field name="name">Stock Receipt / GRN</field>
+            <field name="document_nature">stock_receipt</field>
+            <field name="module_code">stock_receipt</field>
+            <field name="approval_module_code">stock</field>
+            <field name="connector_module_name">custom_approval_stock</field>
+            <field name="target_module_name">stock</field>
+            <field name="document_filter_domain">[('picking_type_code', '=', 'incoming')]</field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">scheduled_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_delivery_order" model="approval.document.type">
+            <field name="name">Delivery Order / GI</field>
+            <field name="document_nature">delivery_order</field>
+            <field name="module_code">delivery_order</field>
+            <field name="approval_module_code">stock</field>
+            <field name="connector_module_name">custom_approval_stock</field>
+            <field name="target_module_name">stock</field>
+            <field name="document_filter_domain">[('picking_type_code', '=', 'outgoing')]</field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">scheduled_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_internal_transfer" model="approval.document.type">
+            <field name="name">Internal Transfer</field>
+            <field name="document_nature">internal_transfer</field>
+            <field name="module_code">internal_transfer</field>
+            <field name="approval_module_code">stock</field>
+            <field name="connector_module_name">custom_approval_stock</field>
+            <field name="target_module_name">stock</field>
+            <field name="document_filter_domain">[('picking_type_code', '=', 'internal')]</field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name">partner_id</field>
+            <field name="date_field_name">scheduled_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_stock_scrap" model="approval.document.type">
+            <field name="name">Scrap Order</field>
+            <field name="document_nature">stock_scrap</field>
+            <field name="module_code">stock_scrap</field>
+            <field name="approval_module_code">stock</field>
+            <field name="connector_module_name">custom_approval_stock</field>
+            <field name="target_module_name">stock</field>
+            <field name="document_filter_domain"></field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name"></field>
+            <field name="date_field_name">create_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Manufacturing Document Types -->
+        <record id="approval_document_type_mrp_production" model="approval.document.type">
+            <field name="name">Manufacturing Order</field>
+            <field name="document_nature">mrp_production</field>
+            <field name="module_code">mrp_production</field>
+            <field name="approval_module_code">mrp</field>
+            <field name="connector_module_name">custom_approval_mrp</field>
+            <field name="target_module_name">mrp</field>
+            <field name="document_filter_domain"></field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name"></field>
+            <field name="date_field_name">date_start</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+
+        <record id="approval_document_type_mrp_unbuild" model="approval.document.type">
+            <field name="name">Unbuild Order</field>
+            <field name="document_nature">mrp_unbuild</field>
+            <field name="module_code">mrp_unbuild</field>
+            <field name="approval_module_code">mrp</field>
+            <field name="connector_module_name">custom_approval_mrp</field>
+            <field name="target_module_name">mrp</field>
+            <field name="document_filter_domain"></field>
+            <field name="amount_field_name"></field>
+            <field name="partner_field_name"></field>
+            <field name="date_field_name">create_date</field>
+            <field name="document_number_field_name">name</field>
+            <field name="company_id" eval="False"/>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

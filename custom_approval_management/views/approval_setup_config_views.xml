@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================
+         Approval Setup Config – List View
+    ============================================================ -->
+    <record id="view_approval_setup_config_tree" model="ir.ui.view">
+        <field name="name">approval.setup.config.tree</field>
+        <field name="model">approval.setup.config</field>
+        <field name="arch" type="xml">
+            <list string="Approval Setup" decoration-muted="not active" decoration-warning="setup_state == 'changes_pending'" decoration-success="setup_state == 'applied'">
+                <field name="name"/>
+                <field name="approval_integration_module_id"/>
+                <field name="module_id"/>
+                <field name="document_nature"/>
+                <field name="company_id"/>
+                <field name="setup_state"/>
+                <field name="min_amount"/>
+                <field name="max_amount"/>
+                <field name="document_type_id"/>
+                <field name="approval_rule_id"/>
+                <field name="active" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Approval Setup Config – Form View
+    ============================================================ -->
+    <record id="view_approval_setup_config_form" model="ir.ui.view">
+        <field name="name">approval.setup.config.form</field>
+        <field name="model">approval.setup.config</field>
+        <field name="arch" type="xml">
+            <form string="Approval Setup">
+                <header>
+                    <field name="setup_state" widget="statusbar" statusbar_visible="draft,changes_pending,applied" readonly="1"/>
+                    <button
+                        name="action_sync_approval_integrations"
+                        string="Sync Approval Integrations"
+                        type="object"
+                        class="btn-secondary"
+                        groups="custom_approval_management.group_custom_approval_admin"/>
+                    <button
+                        name="action_apply_setup"
+                        string="Apply Approval Setup"
+                        type="object"
+                        class="oe_highlight"
+                        data-hotkey="g"
+                        invisible="setup_state not in ['draft', 'changes_pending']"
+                        confirm="This will create or update Document Type, Approval Rule, Rule Lines, and Approver Rights. Continue?"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" invisible="setup_state != 'changes_pending'">
+                        This setup has unapplied changes. Click Apply Approval Setup to update the approval rules.
+                    </div>
+
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            type="object"
+                            name="action_open_document_type"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o"
+                            invisible="not document_type_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Document Type</span>
+                            </div>
+                        </button>
+                        <button
+                            type="object"
+                            name="action_open_approval_rule"
+                            class="oe_stat_button"
+                            icon="fa-tasks"
+                            invisible="not approval_rule_id">
+                            <field name="rule_line_count" widget="statinfo" string="Rule Lines"/>
+                        </button>
+                        <button
+                            type="object"
+                            name="action_open_user_rights"
+                            class="oe_stat_button"
+                            icon="fa-users"
+                            invisible="not document_type_id">
+                            <field name="user_right_count" widget="statinfo" string="Approver Rights"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Approval Setup Name"/>
+                        </h1>
+                    </div>
+
+                    <!-- ── Section 1: Approval Document ─────────────────── -->
+                    <group string="Approval Document">
+                        <group>
+                            <field name="approval_module_code" readonly="1" invisible="1"/>
+                            <field name="approval_integration_module_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="document_type_id"
+                                readonly="not approval_integration_module_id"
+                                domain="[('integration_module_id', '=', approval_integration_module_id), ('is_available', '=', True), ('active', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="company_id"/>
+                        </group>
+                        <!-- Hint row: shown only when there are taken natures -->
+                        <div class="alert alert-warning" colspan="2"
+                             invisible="not taken_natures_hint">
+                            <field name="taken_natures_hint" readonly="1" nolabel="1"/>
+                            <span> — selecting any of these will be blocked on save.</span>
+                        </div>
+                        <group>
+                            <field name="allow_cancel_approved_document"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <!-- ── Section 2: Amount Range ───────────────────────── -->
+                    <group string="Amount Range">
+                        <group>
+                            <field name="min_amount"/>
+                        </group>
+                        <group>
+                            <field name="max_amount"
+                                   help="Set to 0 for unlimited upper bound."/>
+                        </group>
+                        <p class="text-muted" colspan="2">
+                            Maximum Amount = 0 means unlimited.
+                            If a non-zero Maximum Amount is set, it must be greater than or equal to Minimum Amount.
+                        </p>
+                    </group>
+
+                    <group string="Notification Settings">
+                        <group>
+                            <field name="notify_on_submit"/>
+                            <field name="notify_on_next_level"/>
+                            <field name="notify_on_final_approval"/>
+                        </group>
+                        <group>
+                            <field name="notify_on_rejection"/>
+                            <field name="notify_on_cancellation"/>
+                        </group>
+                    </group>
+
+                    <!-- ── Section 3: Approval Levels / Approvers ──────────── -->
+                    <notebook>
+                        <page string="Approval Levels" name="approval_levels">
+                            <field name="setup_line_ids">
+                                <list
+                                    string="Approval Levels"
+                                    editable="bottom"
+                                    decoration-muted="not active">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="approval_level_id"/>
+                                    <field name="min_amount"/>
+                                    <field name="max_amount"/>
+                                    <field name="minimum_user_count" string="Min. Approvers"/>
+                                    <field name="mandatory"/>
+                                    <field name="allow_same_user"/>
+                                    <field name="notification_event_ids" widget="many2many_tags"/>
+                                    <field name="approver_user_ids" widget="many2many_tags"/>
+                                    <field name="rule_line_id" invisible="1"/>
+                                </list>
+                                <form string="Approval Level">
+                                    <group>
+                                        <group>
+                                            <field name="sequence"/>
+                                            <field name="approval_level_id"/>
+                                            <field name="min_amount"/>
+                                            <field name="max_amount"/>
+                                            <field name="minimum_user_count"/>
+                                            <field name="mandatory"/>
+                                            <field name="allow_same_user"/>
+                                            <field name="notification_event_ids" widget="many2many_tags"/>
+                                            <field name="approver_user_ids" widget="many2many_tags"/>
+                                            <field name="rule_line_id" readonly="1"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!-- ── Section 4: Technical Records (read-only) ─── -->
+                        <page string="Technical Records" name="technical_records">
+                            <group string="Generated Backend Records">
+                                <group>
+                                    <field name="approval_module_code" readonly="1"/>
+                                    <field name="approval_integration_module_id" readonly="1"/>
+                                    <field name="module_id" readonly="1"/>
+                                    <field name="document_nature" readonly="1"/>
+                                    <field name="document_type_id" readonly="1"/>
+                                    <field name="last_applied_by_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="approval_rule_id" readonly="1"/>
+                                    <field name="last_applied_on" readonly="1"/>
+                                </group>
+                            </group>
+                            <field name="apply_error_message" readonly="1" nolabel="1" invisible="not apply_error_message"/>
+                            <p class="text-muted" invisible="document_type_id">
+                                Click <strong>Apply Approval Setup</strong> to generate backend records.
+                            </p>
+                            <div invisible="not document_type_id">
+                                <button
+                                    name="action_open_document_type"
+                                    type="object"
+                                    string="Open Document Type"
+                                    class="btn btn-secondary me-1"/>
+                                <button
+                                    name="action_open_approval_rule"
+                                    type="object"
+                                    string="Open Approval Rule"
+                                    class="btn btn-secondary me-1"
+                                    invisible="not approval_rule_id"/>
+                                <button
+                                    name="action_open_user_rights"
+                                    type="object"
+                                    string="Open Approver Rights"
+                                    class="btn btn-secondary"/>
+                            </div>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Approval Setup Config – Search View
+    ============================================================ -->
+    <record id="view_approval_setup_config_search" model="ir.ui.view">
+        <field name="name">approval.setup.config.search</field>
+        <field name="model">approval.setup.config</field>
+        <field name="arch" type="xml">
+            <search string="Approval Setup">
+                <field name="name"/>
+                <field name="approval_integration_module_id"/>
+                <field name="module_id"/>
+                <field name="document_nature"/>
+                <field name="company_id"/>
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('setup_state', '=', 'draft')]"/>
+                <filter name="pending" string="Changes Pending" domain="[('setup_state', '=', 'changes_pending')]"/>
+                <filter name="applied" string="Applied" domain="[('setup_state', '=', 'applied')]"/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="group_by_nature" string="Document Type"
+                    context="{'group_by': 'document_nature'}"/>
+                <filter name="group_by_company" string="Company"
+                    context="{'group_by': 'company_id'}"/>
+                <filter name="group_by_state" string="Setup Status"
+                    context="{'group_by': 'setup_state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================
+         Window Action
+    ============================================================ -->
+    <record id="action_approval_setup_config" model="ir.actions.act_window">
+        <field name="name">Approval Setup</field>
+        <field name="res_model">approval.setup.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_approval_setup_config_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Approval Setup
+            </p>
+            <p>
+                Use Approval Setup to configure Document Types, Approval Rules,
+                and Approvers all in one place.
+                Click <strong>Apply Approval Setup</strong> to generate the
+                backend records automatically.
+            </p>
+        </field>
+    </record>
+
+</odoo>

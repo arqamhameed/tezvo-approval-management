@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tezvo Approval Management</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; background: #f8fafc; color: #243447; line-height: 1.6; }
+    .hero { background: linear-gradient(135deg, #1f6feb 0%, #0d4fa8 100%); color: #fff; padding: 48px 40px 40px; }
+    .hero h1 { margin: 0 0 8px; font-size: 32px; font-weight: 700; }
+    .hero p  { margin: 0 0 8px; font-size: 16px; opacity: 0.95; }
+    .badge { display: inline-block; margin-top: 12px; margin-right: 8px; background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .section { max-width: 900px; margin: 0 auto; padding: 36px 40px; }
+    .section h2 { font-size: 20px; color: #1f6feb; border-bottom: 2px solid #e5e9f2; padding-bottom: 8px; margin-bottom: 20px; }
+    .section p, .section li { font-size: 14px; color: #455569; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .feature-card { background: #fff; border: 1px solid #e5e9f2; border-radius: 10px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .feature-card .icon { font-size: 28px; margin-bottom: 10px; }
+    .feature-card h3 { margin: 0 0 6px; font-size: 15px; color: #1f6feb; }
+    .feature-card p  { margin: 0; font-size: 13px; color: #5b6b7f; line-height: 1.6; }
+    .list-inline { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; list-style: none; margin: 0; }
+    .list-inline li { background: #fff; border: 1px solid #e5e9f2; border-radius: 8px; padding: 8px 16px; font-size: 13px; color: #243447; }
+    .image-block { margin: 14px 0 0; }
+    .image-block img { width: 100%; max-width: 100%; border-radius: 10px; border: 1px solid #e5e9f2; display: block; }
+    .footer { background: #1f6feb; color: #fff; text-align: center; padding: 24px 40px; font-size: 13px; }
+    .footer a { color: #a8d0ff; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Tezvo Approval Management</h1>
+    <p>Configurable Multi-Level Approval Workflow for Odoo 19</p>
+    <p>Tezvo Approval Management is a configurable multi-level approval workflow engine for Odoo 19. It helps organizations manage approvals across Sales, Purchase, Accounting, Inventory, and Manufacturing documents using approval levels, amount thresholds, user rights, delegation, notifications, and audit history.</p>
+    <span class="badge">Odoo 19 Compatible</span>
+    <span class="badge">OPL-1</span>
+  </div>
+
+  <!-- Banner -->
+  <div class="section" style="padding-top:0;">
+    <div class="image-block">
+      <img src="banner.png" alt="Tezvo Approval Management banner" />
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="section">
+    <h2>Key Features</h2>
+    <div class="features">
+      <div class="feature-card">
+        <div class="icon">🔄</div>
+        <h3>Configurable multi-level approval workflows</h3>
+        <p>Create flexible approval chains across document types with multiple stages and approval routes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">💰</div>
+        <h3>Amount-based approval thresholds</h3>
+        <p>Route requests automatically according to document value and approval level limits.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <h3>Sequence-based approval levels</h3>
+        <p>Define approval levels in sequence so each request follows the correct order of review.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👥</div>
+        <h3>Minimum approver requirements</h3>
+        <p>Set minimum approver counts per level to enforce approval accountability and business rules.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🏢</div>
+        <h3>Company-wise approval configuration</h3>
+        <p>Configure approval rules and rights by company to reflect internal control and governance needs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🤝</div>
+        <h3>Approval delegation</h3>
+        <p>Allow approvers to delegate their authority for a defined period when unavailable.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📝</div>
+        <h3>Approval history and audit trail</h3>
+        <p>Track all approval decisions, transitions, and activity in a clear approval history log.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📧</div>
+        <h3>Email notifications</h3>
+        <p>Send notifications for submission, approval, rejection, cancellation, and level changes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">💬</div>
+        <h3>Chatter logging</h3>
+        <p>Maintain approval activity in chatter for easy review directly from the document.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔐</div>
+        <h3>User rights and security groups</h3>
+        <p>Use dedicated approval groups and user rights to control who can view, modify, and manage approval setup.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🛡️</div>
+        <h3>Read-only protection</h3>
+        <p>Protect critical approval setup and back-rule records so only authorized users can make changes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supported Odoo Documents -->
+  <div class="section" style="padding-top:0;">
+    <h2>Supported Odoo Documents</h2>
+    <ul class="list-inline">
+      <li>Sales Orders</li>
+      <li>Purchase Orders</li>
+      <li>Customer Invoices</li>
+      <li>Vendor Bills</li>
+      <li>Customer Payments</li>
+      <li>Vendor Payments</li>
+      <li>Inventory Transfers</li>
+      <li>Manufacturing Orders</li>
+      <li>Unbuild Orders</li>
+      <li>Scrap Orders</li>
+    </ul>
+  </div>
+
+  <!-- Approval Delegation -->
+  <div class="section" style="padding-top:0;">
+    <h2>Approval Delegation</h2>
+    <p>Approvers can delegate approval authority to another user for a defined period when they are on leave or temporarily unavailable.</p>
+    <ul>
+      <li>The system supports date-range validity for each delegation record.</li>
+      <li>The system prevents overlapping delegations for the same approver and period.</li>
+      <li>The system prevents circular delegation to avoid invalid approval chains.</li>
+      <li>Delegated approvals maintain proper approval history and audit trail records for full traceability.</li>
+    </ul>
+  </div>
+
+  <!-- Approval Audit Trail -->
+  <div class="section" style="padding-top:0;">
+    <h2>Approval Audit Trail</h2>
+    <p>Every approval action is tracked so teams can review approval activity with confidence.</p>
+    <ul>
+      <li>Submit, approve, reject, cancel, and level transition actions are recorded.</li>
+      <li>Approval history provides user, date, time, level, and action details.</li>
+      <li>Chatter logs help users review approval activity directly from the related document.</li>
+    </ul>
+  </div>
+
+  <!-- Security and User Rights -->
+  <div class="section" style="padding-top:0;">
+    <h2>Security and User Rights</h2>
+    <p>The module provides focused user access through dedicated approval groups and configurable rights.</p>
+    <ul>
+      <li><strong>Approval User</strong></li>
+      <li><strong>Approval Manager</strong></li>
+      <li><strong>Approval Admin</strong></li>
+      <li><strong>Approval Delegation Officer</strong></li>
+      <li><strong>Approval Back Rules Editor</strong></li>
+    </ul>
+    <p>Approval rights can be managed directly from the user form. Critical approval configuration records are protected, and only authorized users can amend approval setup and back-rule records.</p>
+  </div>
+
+  <!-- Screenshots -->
+  <div class="section" style="padding-top:0;">
+    <h2>Screenshots</h2>
+    <div class="image-block">
+      <h3 style="margin: 0 0 8px; font-size: 15px; color: #1f6feb;">Approval Management Overview</h3>
+      <img src="screenshot_1.png" alt="Approval Management Overview" />
+    </div>
+    <div class="image-block">
+      <h3 style="margin: 18px 0 8px; font-size: 15px; color: #1f6feb;">Approval Setup Configuration</h3>
+      <img src="screenshot_2.png" alt="Approval Setup Configuration" />
+    </div>
+    <div class="image-block">
+      <h3 style="margin: 18px 0 8px; font-size: 15px; color: #1f6feb;">Approval Rules and Levels</h3>
+      <img src="screenshot_3.png" alt="Approval Rules and Levels" />
+    </div>
+    <div class="image-block">
+      <h3 style="margin: 18px 0 8px; font-size: 15px; color: #1f6feb;">Approval Request and History</h3>
+      <img src="screenshot_4.png" alt="Approval Request and History" />
+    </div>
+    <div class="image-block">
+      <h3 style="margin: 18px 0 8px; font-size: 15px; color: #1f6feb;">Approval Delegation</h3>
+      <img src="screenshot_5.png" alt="Approval Delegation" />
+    </div>
+    <div class="image-block">
+      <h3 style="margin: 18px 0 8px; font-size: 15px; color: #1f6feb;">User Approval Rights</h3>
+      <img src="screenshot_6.png" alt="User Approval Rights" />
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p style="margin:0 0 4px;">Developed by <strong>Tezvo</strong></p>
+    <p style="margin:0;opacity:0.9;">Support: tezvosupport@gmail.com</p>
+    <p style="margin:0;opacity:0.9;">Tezvo Approval Management for Odoo 19 &mdash; License: OPL-1</p>
+  </div>
+
+</body>
+</html>

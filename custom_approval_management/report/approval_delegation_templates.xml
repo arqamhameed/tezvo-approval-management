@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_approval_delegation_document">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="printed_on" t-value="datetime.datetime.now()"/>
+                <div class="page">
+                    <h2>Approval Delegation</h2>
+                    <table class="table table-sm o_main_table" style="width:100%;">
+                        <tbody>
+                            <tr><th>Company</th><td><span t-esc="doc.company_id.name or ''"/></td></tr>
+                            <tr><th>Document Number</th><td><span t-esc="doc.name or ''"/></td></tr>
+                            <tr><th>State</th><td><span t-esc="dict(doc._fields['state'].selection).get(doc.state, doc.state)"/></td></tr>
+                            <tr><th>Original Approver</th><td><span t-esc="doc.original_user_id.name or ''"/></td></tr>
+                            <tr><th>Delegated Approver</th><td><span t-esc="doc.delegated_user_id.name or ''"/></td></tr>
+                            <tr><th>From Date</th><td><span t-esc="doc.date_from or ''"/></td></tr>
+                            <tr><th>To Date</th><td><span t-esc="doc.date_to or ''"/></td></tr>
+                            <tr><th>Document Type</th><td><span t-esc="doc.document_type_id.name or ''"/></td></tr>
+                            <tr><th>Approval Level</th><td><span t-esc="doc.approval_level_id.name or ''"/></td></tr>
+                            <tr><th>Reason</th><td><span t-esc="doc.reason or ''"/></td></tr>
+                            <tr><th>Submitted By</th><td><span t-esc="doc.submitted_by_id.name or ''"/></td></tr>
+                            <tr><th>Submitted On</th><td><span t-esc="doc.submitted_on or ''"/></td></tr>
+                            <tr><th>Approval Request Reference</th><td><span t-esc="doc.approval_request_id.name or ''"/></td></tr>
+                            <tr><th>Original Approval Details</th><td><span t-esc="doc.original_approved_by_id.name or ''"/> <span t-esc="doc.original_approved_on or ''"/></td></tr>
+                            <tr><th>Delegated Approval Details</th><td><span t-esc="doc.delegated_accepted_by_id.name or ''"/> <span t-esc="doc.delegated_accepted_on or ''"/></td></tr>
+                            <tr><th>Activated On</th><td><span t-esc="doc.state == 'active' and doc.write_date or ''"/></td></tr>
+                            <tr><th>Expired On</th><td><span t-esc="doc.expired_on or ''"/></td></tr>
+                            <tr><th>Cancelled On</th><td><span t-esc="doc.cancelled_on or ''"/></td></tr>
+                            <tr><th>Printed By</th><td><span t-esc="user.name or ''"/></td></tr>
+                            <tr><th>Printed On</th><td><span t-esc="printed_on"/></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Approval Level List View -->
+    <record id="view_approval_level_tree" model="ir.ui.view">
+        <field name="name">approval.level.tree</field>
+        <field name="model">approval.level</field>
+        <field name="arch" type="xml">
+            <list string="Approval Levels" decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="group_id"/>
+                <field name="company_id"/>
+                <field name="active" widget="boolean"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Approval Level Form View -->
+    <record id="view_approval_level_form" model="ir.ui.view">
+        <field name="name">approval.level.form</field>
+        <field name="model">approval.level</field>
+        <field name="arch" type="xml">
+            <form string="Approval Level">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <group string="Basic Information">
+                        <field name="code"/>
+                        <field name="sequence"/>
+                    </group>
+                    
+                    <group string="Scope">
+                        <field name="group_id"/>
+                        <field name="company_id"/>
+                    </group>
+                    
+                    <group>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Approval Level Search View -->
+    <record id="view_approval_level_search" model="ir.ui.view">
+        <field name="name">approval.level.search</field>
+        <field name="model">approval.level</field>
+        <field name="arch" type="xml">
+            <search string="Approval Levels">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="group_id"/>
+                <field name="company_id"/>
+                <separator/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="filter_company" string="Company" context="{'group_by': 'company_id'}"/>
+                <filter name="filter_group" string="Group" context="{'group_by': 'group_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Approval Level Action -->
+    <record id="action_approval_level" model="ir.actions.act_window">
+        <field name="name">Approval Levels</field>
+        <field name="res_model">approval.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_approval_level_search"/>
+    </record>
+</odoo>

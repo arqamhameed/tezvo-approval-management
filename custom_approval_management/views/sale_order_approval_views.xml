@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_form_approval" model="ir.ui.view">
+        <field name="name">sale.order.form.approval</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header/field[@name='state']" position="before">
+                <button
+                    name="action_submit_for_approval"
+                    string="Submit for Approval"
+                    type="object"
+                    class="btn btn-primary"
+                    invisible="state not in ['draft', 'sent'] or not approval_required or approval_state in ['waiting', 'partial', 'approved'] or approval_request_id"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm' and @id='action_confirm']" position="attributes">
+                <attribute name="invisible">state != 'sent' or (approval_required and approval_state != 'approved')</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm' and not(@id)]" position="attributes">
+                <attribute name="invisible">state != 'draft' or (approval_required and approval_state != 'approved')</attribute>
+            </xpath>
+
+            <xpath expr="//sheet/div[@name='button_box']" position="before">
+                <field name="approval_required" invisible="1"/>
+                <field name="approval_state" invisible="1"/>
+                <field name="approval_request_id" invisible="1"/>
+                <field name="current_approval_level_id" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button
+                    type="object"
+                    name="action_view_approval_request"
+                    class="oe_stat_button"
+                    icon="fa-check-square-o"
+                    invisible="not approval_request_id">
+                    <field name="approval_history_count" widget="statinfo" string="Approval"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//sheet/div[contains(@class, 'oe_title')]" position="after">
+                <div class="alert alert-warning" invisible="not approval_required or approval_state != 'waiting'">
+                    <h4>Waiting for Approval</h4>
+                    <p>This Sales Order is waiting for approval.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-info" invisible="not approval_required or approval_state != 'partial'">
+                    <h4>Partially Approved</h4>
+                    <p>This Sales Order is partially approved and waiting for the next approval level.</p>
+                    <group>
+                        <group>
+                            <field name="current_approval_level_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="not approval_required or approval_state != 'approved' or state not in ['draft', 'sent']">
+                    <h4>Approved</h4>
+                    <p>This Sales Order has been fully approved and is ready to confirm.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-success" invisible="not approval_required or approval_state != 'approved' or state != 'sale'">
+                    <h4>Approval Completed</h4>
+                    <p>This Sales Order has been approved and confirmed.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-danger" invisible="not approval_required or approval_state != 'rejected'">
+                    <h4>Rejected</h4>
+                    <p>This Sales Order approval request has been rejected.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="alert alert-secondary" invisible="not approval_required or approval_state != 'cancelled'">
+                    <h4>Approval Cancelled</h4>
+                    <p>This Sales Order approval request has been cancelled.</p>
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+
+                <div class="mt-2" invisible="not approval_request_id">
+                    <button
+                        name="action_view_approval_request"
+                        type="object"
+                        string="View Approval Request"
+                        class="btn btn-secondary btn-sm"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Approval Status" name="approval_status">
+                    <group string="Approval Status" invisible="not approval_required">
+                        <group>
+                            <field name="approval_required" readonly="1"/>
+                            <field name="approval_state" readonly="1" widget="badge"
+                                decoration-success="approval_state == 'approved'"
+                                decoration-danger="approval_state == 'rejected'"
+                                decoration-warning="approval_state in ['waiting', 'partial']"
+                                decoration-muted="approval_state == 'cancelled'"/>
+                        </group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                            <field name="current_approval_level_id" readonly="1"/>
+                            <field name="approval_history_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <p invisible="approval_required">
+                        No approval configuration found for this Sales Order.
+                        Configure an Approval Document Type for sale.order in Approval Management.
+                    </p>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Inherit the standard res.users form to add an "Approval Rights" section
+        inside the Access Rights tab.  Using computed Boolean fields (not
+        category_id on res.groups, which is unsupported in Odoo 19) so the
+        section is visible WITHOUT developer mode.
+    -->
+    <record id="view_users_form_approval_rights" model="ir.ui.view">
+        <field name="name">res.users.form.approval.rights</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <!-- Filter out custom approval groups from standard Extra Rights,
+                 keeping them visible ONLY in Approval Management Rights section -->
+            <xpath expr="//field[@name='group_ids' and parent::page[@name='access_rights']]" position="attributes">
+                <attribute name="domain">[('id', 'not in', [ref('custom_approval_management.group_custom_approval_user'), ref('custom_approval_management.group_custom_approval_manager'), ref('custom_approval_management.group_custom_approval_admin'), ref('custom_approval_management.group_custom_approval_delegation_officer'), ref('custom_approval_management.group_approval_back_rules_editor')])]</attribute>
+            </xpath>
+            <!-- Add Approval Management Rights section with custom Boolean fields -->
+            <xpath expr="//page[@name='access_rights']" position="inside">
+                <group string="Approval Management Rights" groups="base.group_system" invisible="share">
+                    <field name="approval_group_user"/>
+                    <field name="approval_group_manager"/>
+                    <field name="approval_group_admin"/>
+                    <field name="approval_group_delegation_officer"/>
+                    <field name="approval_group_back_rules_editor"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

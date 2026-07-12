@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_custom_approval_management" model="ir.module.category">
+        <field name="name">Approval Management</field>
+        <field name="description">Access rights for Approval Management features.</field>
+        <field name="sequence">35</field>
+    </record>
+
+    <record id="group_custom_approval_user" model="res.groups">
+        <field name="name">Approval User</field>
+    </record>
+
+    <record id="group_custom_approval_manager" model="res.groups">
+        <field name="name">Approval Manager</field>
+        <field name="implied_ids" eval="[(4, ref('custom_approval_management.group_custom_approval_user'))]"/>
+    </record>
+
+    <record id="group_custom_approval_admin" model="res.groups">
+        <field name="name">Approval Admin</field>
+        <field name="implied_ids" eval="[(4, ref('custom_approval_management.group_custom_approval_manager'))]"/>
+    </record>
+
+    <record id="group_custom_approval_delegation_officer" model="res.groups">
+        <field name="name">Approval Delegation Officer</field>
+        <field name="implied_ids" eval="[(4, ref('custom_approval_management.group_custom_approval_user'))]"/>
+    </record>
+
+    <record id="group_approval_back_rules_editor" model="res.groups">
+        <field name="name">Approval Back Rules Editor</field>
+        <field name="comment">Special group for users who can manually edit Back Rules and Setup records (Document Types, Approval Rules, Approval Users). Normal Approval Admins cannot edit these records.</field>
+    </record>
+
+    <record id="rule_approval_delegation_user_actionable" model="ir.rule">
+        <field name="name">Approval Delegation User Actionable Records</field>
+        <field name="model_id" ref="model_approval_delegation"/>
+        <field name="groups" eval="[(4, ref('custom_approval_management.group_custom_approval_user'))]"/>
+        <field name="domain_force">[
+            '|', '|',
+            ('create_uid', '=', user.id),
+            ('original_user_id', '=', user.id),
+            ('delegated_user_id', '=', user.id)
+        ]</field>
+    </record>
+
+    <record id="rule_approval_delegation_admin_all" model="ir.rule">
+        <field name="name">Approval Delegation Admin All</field>
+        <field name="model_id" ref="model_approval_delegation"/>
+        <field name="groups" eval="[(4, ref('custom_approval_management.group_custom_approval_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_approval_delegation_officer_all" model="ir.rule">
+        <field name="name">Approval Delegation Officer All</field>
+        <field name="model_id" ref="model_approval_delegation"/>
+        <field name="groups" eval="[(4, ref('custom_approval_management.group_custom_approval_delegation_officer'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

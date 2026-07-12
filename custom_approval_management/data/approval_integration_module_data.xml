@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Approval Management - Core -->
+        <record id="integration_approval_management" model="approval.integration.module">
+            <field name="name">Approval Management</field>
+            <field name="code">approval_management</field>
+            <field name="connector_module_name">custom_approval_management</field>
+            <field name="target_module_names">custom_approval_management</field>
+            <field name="sequence">1</field>
+            <field name="active">True</field>
+            <field name="description">Core Approval Management module</field>
+        </record>
+
+        <!-- Sales Integration -->
+        <record id="integration_sale" model="approval.integration.module">
+            <field name="name">Sales</field>
+            <field name="code">sale</field>
+            <field name="connector_module_name">custom_approval_sale</field>
+            <field name="target_module_names">sale_management,sale</field>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+            <field name="description">Sales Order approval</field>
+        </record>
+
+        <!-- Purchase Integration -->
+        <record id="integration_purchase" model="approval.integration.module">
+            <field name="name">Purchase</field>
+            <field name="code">purchase</field>
+            <field name="connector_module_name">custom_approval_purchase</field>
+            <field name="target_module_names">purchase</field>
+            <field name="sequence">20</field>
+            <field name="active">True</field>
+            <field name="description">Purchase Order approval</field>
+        </record>
+
+        <!-- Accounting Integration -->
+        <record id="integration_account" model="approval.integration.module">
+            <field name="name">Accounting</field>
+            <field name="code">account</field>
+            <field name="connector_module_name">custom_approval_account</field>
+            <field name="target_module_names">account</field>
+            <field name="sequence">30</field>
+            <field name="active">True</field>
+            <field name="description">Vendor Bills, Customer Invoices, Payments, Journal Entries approval</field>
+        </record>
+
+        <!-- Inventory Integration -->
+        <record id="integration_stock" model="approval.integration.module">
+            <field name="name">Inventory</field>
+            <field name="code">stock</field>
+            <field name="connector_module_name">custom_approval_stock</field>
+            <field name="target_module_names">stock</field>
+            <field name="sequence">40</field>
+            <field name="active">True</field>
+            <field name="description">Stock operations approval (GRN, Delivery, Transfers, Scrap)</field>
+        </record>
+
+        <!-- Manufacturing Integration -->
+        <record id="integration_mrp" model="approval.integration.module">
+            <field name="name">Manufacturing</field>
+            <field name="code">mrp</field>
+            <field name="connector_module_name">custom_approval_mrp</field>
+            <field name="target_module_names">mrp</field>
+            <field name="sequence">50</field>
+            <field name="active">True</field>
+            <field name="description">Manufacturing Orders and Unbuild Orders approval</field>
+        </record>
+    </data>
+</odoo>

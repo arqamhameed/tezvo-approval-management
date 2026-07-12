@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_approval_delegation" model="ir.sequence">
+        <field name="name">Approval Delegation</field>
+        <field name="code">approval.delegation</field>
+        <field name="prefix">AD/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <record id="approval_level_delegation_original" model="approval.level">
+        <field name="name">Original Approver</field>
+        <field name="code">approval_delegation_original</field>
+        <field name="sequence">10</field>
+        <field name="company_id" eval="False"/>
+        <field name="active">True</field>
+    </record>
+
+    <record id="approval_level_delegation_delegated" model="approval.level">
+        <field name="name">Delegated Approver</field>
+        <field name="code">approval_delegation_delegated</field>
+        <field name="sequence">20</field>
+        <field name="company_id" eval="False"/>
+        <field name="active">True</field>
+    </record>
+
+    <record id="approval_document_type_approval_delegation" model="approval.document.type">
+        <field name="name">Approval Delegation</field>
+        <field name="document_nature">approval_delegation</field>
+        <field name="model_id" ref="model_approval_delegation"/>
+        <field name="module_code">approval_delegation</field>
+        <field name="approval_module_code">custom_approval_management</field>
+        <field name="connector_module_name">custom_approval_management</field>
+        <field name="target_module_name">custom_approval_management</field>
+        <field name="amount_field_name"></field>
+        <field name="partner_field_name"></field>
+        <field name="date_field_name">date_from</field>
+        <field name="document_number_field_name">name</field>
+        <field name="company_id" eval="False"/>
+        <field name="active">True</field>
+    </record>
+</odoo>

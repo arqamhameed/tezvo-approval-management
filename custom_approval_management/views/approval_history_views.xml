@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Approval History List View -->
+    <record id="view_approval_history_tree" model="ir.ui.view">
+        <field name="name">approval.history.tree</field>
+        <field name="model">approval.history</field>
+        <field name="arch" type="xml">
+            <list string="Approval History" decoration-success="action=='approved'" decoration-danger="action=='rejected'" decoration-info="action=='submitted'" decoration-warning="action=='reset'" decoration-muted="action=='cancelled'">
+                <field name="action_date" string="Date &amp; Time"/>
+                <field name="request_id"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="level_id"/>
+                <field name="user_id"/>
+                <field name="is_delegated_action"/>
+                <field name="delegated_original_user_id"/>
+                <field name="delegated_user_id"/>
+                <field name="delegation_id"/>
+                <field name="action" widget="badge" decoration-success="action=='approved'" decoration-danger="action=='rejected'" decoration-info="action=='submitted'" decoration-warning="action=='reset'" decoration-muted="action=='cancelled'"/>
+                <field name="remarks"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Approval History Form View -->
+    <record id="view_approval_history_form" model="ir.ui.view">
+        <field name="name">approval.history.form</field>
+        <field name="model">approval.history</field>
+        <field name="arch" type="xml">
+            <form string="Approval History">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="request_id" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group string="Approval Action">
+                        <field name="action" widget="badge" readonly="1" decoration-success="action=='approved'" decoration-danger="action=='rejected'" decoration-info="action=='submitted'" decoration-warning="action=='reset'" decoration-muted="action=='cancelled'"/>
+                        <field name="action_date" readonly="1"/>
+                    </group>
+                    
+                    <group string="Approval Details">
+                        <field name="level_id" readonly="1"/>
+                        <field name="user_id" readonly="1"/>
+                        <field name="is_delegated_action" readonly="1"/>
+                        <field name="delegated_original_user_id" readonly="1"/>
+                        <field name="delegated_user_id" readonly="1"/>
+                        <field name="delegation_id" readonly="1"/>
+                    </group>
+                    
+                    <group string="Document Reference">
+                        <field name="res_model" readonly="1"/>
+                        <field name="res_id" readonly="1"/>
+                    </group>
+                    
+                    <group string="Remarks">
+                        <field name="remarks" readonly="1" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Approval History Search View -->
+    <record id="view_approval_history_search" model="ir.ui.view">
+        <field name="name">approval.history.search</field>
+        <field name="model">approval.history</field>
+        <field name="arch" type="xml">
+            <search string="Approval History">
+                <field name="request_id"/>
+                <field name="user_id"/>
+                <field name="level_id"/>
+                <field name="action_date"/>
+                <field name="remarks"/>
+                <separator/>
+                <filter name="approved" string="Approved" domain="[('action', '=', 'approved')]"/>
+                <filter name="rejected" string="Rejected" domain="[('action', '=', 'rejected')]"/>
+                <filter name="submitted" string="Submitted" domain="[('action', '=', 'submitted')]"/>
+                <filter name="reset" string="Reset" domain="[('action', '=', 'reset')]"/>
+                <filter name="cancelled" string="Cancelled" domain="[('action', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="filter_user" string="User" context="{'group_by': 'user_id'}"/>
+                <filter name="filter_level" string="Level" context="{'group_by': 'level_id'}"/>
+                <filter name="filter_action" string="Action" context="{'group_by': 'action'}"/>
+                <filter name="filter_date" string="Date" context="{'group_by': 'action_date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Approval History Action -->
+    <record id="action_approval_history" model="ir.actions.act_window">
+        <field name="name">Approval History</field>
+        <field name="res_model">approval.history</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_approval_history_search"/>
+    </record>
+</odoo>

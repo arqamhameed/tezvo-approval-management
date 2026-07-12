@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="approval_notification_event_submit" model="approval.notification.event">
+        <field name="name">Submit</field>
+        <field name="code">submit</field>
+        <field name="sequence">10</field>
+        <field name="active">1</field>
+    </record>
+
+    <record id="approval_notification_event_next_level" model="approval.notification.event">
+        <field name="name">Next Level</field>
+        <field name="code">next_level</field>
+        <field name="sequence">20</field>
+        <field name="active">1</field>
+    </record>
+
+    <record id="approval_notification_event_final_approval" model="approval.notification.event">
+        <field name="name">Final Approval</field>
+        <field name="code">final_approval</field>
+        <field name="sequence">30</field>
+        <field name="active">1</field>
+    </record>
+
+    <record id="approval_notification_event_rejection" model="approval.notification.event">
+        <field name="name">Rejection</field>
+        <field name="code">rejection</field>
+        <field name="sequence">40</field>
+        <field name="active">1</field>
+    </record>
+
+    <record id="approval_notification_event_cancellation" model="approval.notification.event">
+        <field name="name">Cancellation</field>
+        <field name="code">cancellation</field>
+        <field name="sequence">50</field>
+        <field name="active">1</field>
+    </record>
+</odoo>

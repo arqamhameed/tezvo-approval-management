@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mail_template_approval_required_current" model="mail.template">
+            <field name="name">Approval Required - Current Approver</field>
+            <field name="model_id" ref="model_approval_request"/>
+            <field name="subject">[Approval Required] ${object.document_ref or object.name} - ${object.current_level_id.name or ''}</field>
+            <field name="email_from">${(user.email_formatted or user.email or '')}</field>
+            <field name="email_to">${object._get_current_approver_emails()}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family:Arial,Helvetica,sans-serif;background:#f6f8fb;padding:24px;">
+  <div style="max-width:760px;margin:0 auto;background:#ffffff;border:1px solid #e5e9f2;border-radius:12px;overflow:hidden;">
+    <div style="background:#1f6feb;color:#ffffff;padding:16px 20px;">
+      <h2 style="margin:0;font-size:20px;">Approval Required</h2>
+      <span style="display:inline-block;margin-top:8px;background:#ffffff;color:#1f6feb;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;">WAITING APPROVAL</span>
+    </div>
+    <div style="padding:20px;">
+      <p style="margin:0 0 14px 0;color:#243447;">A document is waiting for your approval at the current level.</p>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Approval Request</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.name or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Document Type</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.document_type_id.name or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Document Reference</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.document_ref or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Partner</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.partner_id.name or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Amount</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${'%.2f' % (object.amount_total or 0.0)}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Company</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.company_id.name or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Current Approval Level</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.current_level_id.name or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Submitted By</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.submitted_by.name or '-'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #e5e9f2;"><strong>Submitted Date</strong></td><td style="padding:8px;border:1px solid #e5e9f2;">${object.submitted_date or '-'}</td></tr>
+      </table>
+      <div style="margin-top:18px;">
+        <a href="${object._get_approval_request_url()}" style="background:#1f6feb;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;margin-right:8px;">Open Approval Request</a>
+        <a href="${object._get_related_document_url()}" style="background:#5b6b7f;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;">Open Document</a>
+      </div>
+      <p style="margin-top:14px;color:#6b7785;font-size:12px;">This is an automated approval notification from Odoo.</p>
+    </div>
+  </div>
+</div>
+            ]]></field>
+        </record>
+
+        <record id="mail_template_approval_required_next_level" model="mail.template">
+            <field name="name">Approval Required - Next Level Approver</field>
+            <field name="model_id" ref="model_approval_request"/>
+            <field name="subject">[Next Level Approval] ${object.document_ref or object.name} - ${object.current_level_id.name or ''}</field>
+            <field name="email_from">${(user.email_formatted or user.email or '')}</field>
+            <field name="email_to">${object._get_current_approver_emails()}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family:Arial,Helvetica,sans-serif;background:#f7f4ff;padding:24px;">
+  <div style="max-width:760px;margin:0 auto;background:#ffffff;border:1px solid #e9defc;border-radius:12px;overflow:hidden;">
+    <div style="background:#7b3fe4;color:#ffffff;padding:16px 20px;">
+      <h2 style="margin:0;font-size:20px;">Approval Required - Next Level</h2>
+      <span style="display:inline-block;margin-top:8px;background:#ffffff;color:#7b3fe4;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;">NEXT LEVEL</span>
+    </div>
+    <div style="padding:20px;">
+      <p style="margin:0 0 14px 0;color:#243447;">The request has moved to your approval level.</p>
+      <p style="margin:0 0 8px 0;"><strong>Approval Request:</strong> ${object.name or '-'}</p>
+      <p style="margin:0 0 8px 0;"><strong>Current Level:</strong> ${object.current_level_id.name or '-'}</p>
+      <p style="margin:0 0 8px 0;"><strong>Document:</strong> ${object.document_ref or '-'}</p>
+      <div style="margin-top:18px;">
+        <a href="${object._get_approval_request_url()}" style="background:#7b3fe4;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;margin-right:8px;">Open Approval Request</a>
+        <a href="${object._get_related_document_url()}" style="background:#5b6b7f;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;">Open Document</a>
+      </div>
+      <p style="margin-top:14px;color:#6b7785;font-size:12px;">This is an automated approval notification from Odoo.</p>
+    </div>
+  </div>
+</div>
+            ]]></field>
+        </record>
+
+        <record id="mail_template_approval_final_completed" model="mail.template">
+            <field name="name">Final Approval Completed - Requester</field>
+            <field name="model_id" ref="model_approval_request"/>
+            <field name="subject">[Approved] ${object.document_ref or object.name}</field>
+            <field name="email_from">${(user.email_formatted or user.email or '')}</field>
+            <field name="email_to">${object._get_requester_email()}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family:Arial,Helvetica,sans-serif;background:#f2fbf5;padding:24px;">
+  <div style="max-width:760px;margin:0 auto;background:#ffffff;border:1px solid #d6f2df;border-radius:12px;overflow:hidden;">
+    <div style="background:#1f9d55;color:#ffffff;padding:16px 20px;">
+      <h2 style="margin:0;font-size:20px;">Approval Completed</h2>
+      <span style="display:inline-block;margin-top:8px;background:#ffffff;color:#1f9d55;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;">APPROVED</span>
+    </div>
+    <div style="padding:20px;">
+      <p style="margin:0 0 14px 0;color:#243447;">Your document has been fully approved.</p>
+      <p style="margin:0 0 8px 0;"><strong>Approval Request:</strong> ${object.name or '-'}</p>
+      <p style="margin:0 0 8px 0;"><strong>Document:</strong> ${object.document_ref or '-'}</p>
+      <div style="margin-top:18px;">
+        <a href="${object._get_approval_request_url()}" style="background:#1f9d55;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;margin-right:8px;">Open Approval Request</a>
+        <a href="${object._get_related_document_url()}" style="background:#5b6b7f;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;">Open Document</a>
+      </div>
+      <p style="margin-top:14px;color:#6b7785;font-size:12px;">This is an automated approval notification from Odoo.</p>
+    </div>
+  </div>
+</div>
+            ]]></field>
+        </record>
+
+        <record id="mail_template_approval_rejected_requester" model="mail.template">
+            <field name="name">Approval Rejected - Requester</field>
+            <field name="model_id" ref="model_approval_request"/>
+            <field name="subject">[Rejected] ${object.document_ref or object.name}</field>
+            <field name="email_from">${(user.email_formatted or user.email or '')}</field>
+            <field name="email_to">${object._get_requester_email()}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family:Arial,Helvetica,sans-serif;background:#fff5f5;padding:24px;">
+  <div style="max-width:760px;margin:0 auto;background:#ffffff;border:1px solid #f8d7da;border-radius:12px;overflow:hidden;">
+    <div style="background:#dc3545;color:#ffffff;padding:16px 20px;">
+      <h2 style="margin:0;font-size:20px;">Approval Rejected</h2>
+      <span style="display:inline-block;margin-top:8px;background:#ffffff;color:#dc3545;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;">REJECTED</span>
+    </div>
+    <div style="padding:20px;">
+      <p style="margin:0 0 14px 0;color:#243447;">Your approval request was rejected.</p>
+      <p style="margin:0 0 8px 0;"><strong>Approval Request:</strong> ${object.name or '-'}</p>
+      <p style="margin:0 0 8px 0;"><strong>Document:</strong> ${object.document_ref or '-'}</p>
+      <div style="margin-top:18px;">
+        <a href="${object._get_approval_request_url()}" style="background:#dc3545;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;margin-right:8px;">Open Approval Request</a>
+        <a href="${object._get_related_document_url()}" style="background:#5b6b7f;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;">Open Document</a>
+      </div>
+      <p style="margin-top:14px;color:#6b7785;font-size:12px;">This is an automated approval notification from Odoo.</p>
+    </div>
+  </div>
+</div>
+            ]]></field>
+        </record>
+
+        <record id="mail_template_approval_cancelled_requester" model="mail.template">
+            <field name="name">Approval Cancelled - Requester</field>
+            <field name="model_id" ref="model_approval_request"/>
+            <field name="subject">[Cancelled] ${object.document_ref or object.name}</field>
+            <field name="email_from">${(user.email_formatted or user.email or '')}</field>
+            <field name="email_to">${object._get_requester_email()}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family:Arial,Helvetica,sans-serif;background:#fff8f1;padding:24px;">
+  <div style="max-width:760px;margin:0 auto;background:#ffffff;border:1px solid #f4d7b5;border-radius:12px;overflow:hidden;">
+    <div style="background:#f08c00;color:#ffffff;padding:16px 20px;">
+      <h2 style="margin:0;font-size:20px;">Approval Cancelled</h2>
+      <span style="display:inline-block;margin-top:8px;background:#ffffff;color:#f08c00;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;">CANCELLED</span>
+    </div>
+    <div style="padding:20px;">
+      <p style="margin:0 0 14px 0;color:#243447;">The approval request was cancelled.</p>
+      <p style="margin:0 0 8px 0;"><strong>Approval Request:</strong> ${object.name or '-'}</p>
+      <p style="margin:0 0 8px 0;"><strong>Document:</strong> ${object.document_ref or '-'}</p>
+      <div style="margin-top:18px;">
+        <a href="${object._get_approval_request_url()}" style="background:#f08c00;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;margin-right:8px;">Open Approval Request</a>
+        <a href="${object._get_related_document_url()}" style="background:#5b6b7f;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;">Open Document</a>
+      </div>
+      <p style="margin-top:14px;color:#6b7785;font-size:12px;">This is an automated approval notification from Odoo.</p>
+    </div>
+  </div>
+</div>
+            ]]></field>
+        </record>
+</odoo>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem
+        id="menu_custom_approval_management_root"
+        name="Approval Management"
+        web_icon="custom_approval_management,static/description/icon.png"
+        groups="custom_approval_management.group_custom_approval_user,custom_approval_management.group_custom_approval_manager,custom_approval_management.group_custom_approval_admin"
+        sequence="85"
+    />
+
+    <!-- My Pending Approvals Menu (calls Python server action for reliable ID resolution) -->
+    <menuitem
+        id="menu_approval_request_my_pending"
+        name="My Pending Approvals"
+        parent="menu_custom_approval_management_root"
+        action="action_my_pending_approvals_server"
+        groups="custom_approval_management.group_custom_approval_user,custom_approval_management.group_custom_approval_manager,custom_approval_management.group_custom_approval_admin"
+        sequence="10"
+    />
+
+    <!-- All Approval Requests Menu -->
+    <menuitem
+        id="menu_approval_request"
+        name="All Approval Requests"
+        parent="menu_custom_approval_management_root"
+        action="action_approval_request"
+        groups="custom_approval_management.group_custom_approval_manager,custom_approval_management.group_custom_approval_admin"
+        sequence="20"
+    />
+
+    <!-- Approval History Menu -->
+    <menuitem
+        id="menu_approval_history"
+        name="Approval History"
+        parent="menu_custom_approval_management_root"
+        action="action_approval_history"
+        groups="custom_approval_management.group_custom_approval_manager,custom_approval_management.group_custom_approval_admin"
+        sequence="30"
+    />
+
+    <!-- Configuration Menu -->
+    <menuitem
+        id="menu_custom_approval_management_config"
+        name="Configuration"
+        parent="menu_custom_approval_management_root"
+        groups="custom_approval_management.group_custom_approval_admin,custom_approval_management.group_custom_approval_delegation_officer"
+        sequence="40"
+    />
+
+    <!-- Master Setup Parent Menu -->
+    <menuitem
+        id="menu_master_setup"
+        name="Master Setup"
+        parent="menu_custom_approval_management_config"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="10"
+    />
+
+    <!-- Back Rules and Setup Parent Menu -->
+    <menuitem
+        id="menu_back_rules_setup"
+        name="Back Rules and Setup"
+        parent="menu_custom_approval_management_config"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="20"
+    />
+
+    <!-- Approval Setup Menu (under Master Setup) -->
+    <menuitem
+        id="menu_approval_setup_config"
+        name="Approval Setup"
+        parent="menu_master_setup"
+        action="action_approval_setup_config"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="10"/>
+
+    <!-- Approval Levels Menu (under Master Setup) -->
+    <menuitem
+        id="menu_approval_level"
+        name="Approval Levels"
+        parent="menu_master_setup"
+        action="action_approval_level"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="20"
+    />
+
+    <!-- Approval Delegations Menu (under Master Setup) -->
+    <menuitem
+        id="menu_approval_delegation"
+        name="Approval Delegations"
+        parent="menu_master_setup"
+        action="action_approval_delegation"
+        groups="custom_approval_management.group_custom_approval_admin,custom_approval_management.group_custom_approval_delegation_officer"
+        sequence="30"
+    />
+
+    <!-- Document Types Menu (under Back Rules and Setup) -->
+    <menuitem
+        id="menu_approval_document_type"
+        name="Document Types"
+        parent="menu_back_rules_setup"
+        action="action_approval_document_type"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="10"
+    />
+
+    <!-- Approval Rules Menu (under Back Rules and Setup) -->
+    <menuitem
+        id="menu_approval_rule"
+        name="Approval Rules"
+        parent="menu_back_rules_setup"
+        action="action_approval_rule"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="20"
+    />
+
+    <!-- Approval Users Menu (under Back Rules and Setup) -->
+    <menuitem
+        id="menu_approval_user_right"
+        name="Approval Users"
+        parent="menu_back_rules_setup"
+        action="action_approval_user_right"
+        groups="custom_approval_management.group_custom_approval_admin"
+        sequence="30"
+    />
+
+    <!-- Server action for Sync Approval Integrations (used by button in Approval Setup form) -->
+    <record id="action_sync_approval_integrations_server" model="ir.actions.server">
+        <field name="name">Sync Approval Integrations</field>
+        <field name="model_id" ref="model_approval_integration_module"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_sync_integrations()</field>
+    </record>
+</odoo>
